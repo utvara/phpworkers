@@ -50,34 +50,6 @@ class Edo_Event
         }
     }
 
-    /**
-     * Row from `events` table
-     * array (
-         'id' => '32',
-         'event_id' => '',
-         'ref' => '/marker/3114/1258118758',
-         'event' => 'update',
-         'tag' => '["marker","marker\\/3114"]',
-         'time_started' => '2009-11-13 14:25:58',
-         'body' => 'null',
-         'lang' => 'de',
-     )
-     */
-    public static function buildFromDbRow($row)
-    {
-        $input = array(
-            'id' => $row['id'],
-            'ref' => $row['ref'],
-            'event' => $row['event'],
-            'tag' => empty($row['tag']) ? null : json_decode($row['tag'],true),
-            'time_started' => strtotime($row['time_started']),
-            'body' => empty($row['body']) ? null : json_decode($row['body'],true),
-            'lang' => $row['lang'],
-        );
-
-        return new Edo_Event($input);
-    }
-
     public function toArray()
     {
         //we explicitly create it cause using $event directly might not contain one of indexes

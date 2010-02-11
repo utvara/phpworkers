@@ -11,7 +11,6 @@ abstract class Edo_Event_Worker_Abstract
     private $global_config = array();
 
     protected $current_event = array();
-    private $RestClient = null;//this is for lazy load only. client is used with $this->RestClient->...
 
     abstract public function processEvent(Edo_Event $event);
 
