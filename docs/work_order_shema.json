@@ -1,0 +1,30 @@
+{"description":"A work order",
+    "type":"object",
+    "properties": {
+        "pool": {"type":"string", "description":"worker message pool"},
+        "filter" : {
+            "type":"array", 
+            "description":"event tags",
+            "items": {
+                "type":"object",
+                "properties": {
+                    "event": {"type":"string", "description":"event name"},
+                    "tag": {
+                        "type":"array", 
+                        "description":"tag name",
+                        "items": {"type":"string"}
+                    }
+                }
+            }
+        }
+    }
+}
+/*
+{
+    "pool": "/path/worker/pool",
+    "filter":[
+        {"event":"create", "tag":["article","marker"]},
+        {"event":"update", "tag":["article","marker"]},
+    }
+}
+*/

@@ -1,0 +1,18 @@
+{"description":"A worker message",
+    "type":"object",
+    "properties": {
+        "ref": {"type":"string", "description":"api url reference"},
+        "event": {"type":"string", "description":"api event: updated, created, deleted, ..."},
+        "tag" : {"type":"array", "description":"event tags", "items": {"type":"string"}},
+        "worker_id" : {"type":"string", "description":"worker that is working on the message", "optional":true},
+        "work_stated" : {"type":"integer", "description":"work start timestamp", "optional":true},
+        "number_of_attempts" : {"type":"integer", "description":"work number of attempts", "optional":true}
+    }
+}
+/*
+{
+    "ref": "/article/123/12121432",
+    "event": "update",
+    "tag":["article","category/342","marker/432","joe"]
+}
+*/

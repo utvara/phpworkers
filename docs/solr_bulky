@@ -1,0 +1,26 @@
+[OVERAL]
+1. marker name change
+2. marker url_name change
+3. category title change
+4. category url_title change
+
+
+[CATEGORY CHANGE]
+if its a category name is changed
+1. get the current category data
+2. reindex all markers and articles in that category
+2.1 get markers from solr using category filter and reindex them
+2.2 get all articles from solr using category filter and reindex them
+
+
+[MARKER NAME CHANGE]:
+1. only do something if not object
+2. this articles http://solr.test.earth.org:8081/edo-en/select/?defType=edo_lucene&descendant-of=2&doctype=article
+3. this markers  http://solr.test.earth.org:8081/edo-en/select/?defType=edo_lucene&descendant-of=2&doctype=marker
+
+[MARKER EDO_PATH CHANGE]
+1. only do something if not object
+2. articles that 2 is direct parent
+http://solr.test.earth.org:8081/edo-en/select/?doctype=article&defType=edo_lucene&parent=2
+3. objects!! that 2 is direct parent. All other  will not have affected their url in any way
+http://solr.test.earth.org:8081/edo-en/select/?doctype=marker&defType=edo_lucene&parent=2&object=1

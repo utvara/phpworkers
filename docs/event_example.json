@@ -1,0 +1,6 @@
+{
+    "id":"event_example",
+    "ref": "/article/123/12121432",
+    "event": "update",
+    "tag":["article","category/342","marker/432"]
+}
