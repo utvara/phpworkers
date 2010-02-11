@@ -25,13 +25,18 @@ $config['engine']['base_path'] = dirname(dirname(dirname(__FILE__))) . '/example
 
 $config['workers'] = array();
 $config['workers']['manager'] = array(
-  "active_workers" => array("example", "eventstats")
+  "active_workers" => array("example", "eventstats"),
+  "className" => "Edo_Event_Worker_Manager"
 );
 
 $config['workers']['eventstats'] = array(
-  "filter" => 'ACCEPT_ALL'
+  "filter" => 'ACCEPT_ALL',
+  "className" => "My_Eventstats",
+  "pathName" => dirname(dirname(__FILE__)) . '/workshop/Eventstats.php' 
 );
 
-$config['workers']['example'] = array(
-  "filter" => array("create" => array("article","marker"), "update" => array("article","marker"))
+$config['workers']['my_worker'] = array(
+  "filter" => array("create" => array("article","marker"), "update" => array("article","marker")),
+  "className" => "My_Worker",
+  "pathName" => dirname(dirname(__FILE__)) . '/workshop/My_Worker.php'
 );
