@@ -1,11 +1,10 @@
 <?php
-
 /**
  * THIS IS CRONJOB
- * It runs either as manager or one of workers types. See docs/README.txt for more
+ * It runs either as manager or one of workers names. See docs/README.txt for more
  *
  * Syntax:
- * php ./cronjob_workshop_worker --worker=<worker_type>
+ * php ./cronjob_workshop_worker --worker=<worker_name>
  *
  * Example run of cronjob
  * php ./cronjob_workshop_worker.php --worker=manager --time-limit=20 --set-time-limit=0 --full-lock=true
@@ -42,10 +41,15 @@ $defaultOptions = array(
     //In case of file engine means moving to failed/ directory
     'set-time-limit' => 0,
 );
+
+if ($num_args < 2) {
+    help();exit;
+}
+
 $options = parseOptions($num_args,$args,$defaultOptions);
 require_once($options['base-config']);
 
-//Setting environment stuff
+//Setting environment
 error_reporting($config['env']['error_reporting']);
 set_time_limit($options['set-time-limit']);
 if (!empty($config['env']['date_default_timezone_set'])) {
@@ -56,48 +60,50 @@ set_include_path(implode(PATH_SEPARATOR,array(
     get_include_path()
 )));
 
+$fullLock = $options['full-lock'];
+$fullLock = $fullLock ? "lock_full_{$worker_name}" : null;
+$fullLockWarningTime = $options['full-lock-warning-time'];
+$allowedAttempts = $options['allowed-attempts'];
+$limit_time = $options['time-limit'];
+
+//include required classes
 require_once ("Edo/Event/Engine/Factory.php");
 require_once ("Edo/Event.php");
 require_once ("Edo/Event/Engine.php");
 //require_once ("Edo/Event/Poolable.php");
 
-//config
-//$allowedWorkerTypes = array('manager','feedy', 'loggy', 'tweety', 'tiledrop',
-//    'alldestination','sitemapy','contentstats','solrybulk',
-//    'domestos','streamy', 'sanitar','solrysingle','eventstats','activity','eventloggy',
-//    's3', 'imaginator', 'imageindexer', 'followrecommended','userindexer'
-//);
-
-if ($num_args < 2) {
-    help();exit;
+//figuring out class name and path of worker and including it
+$worker_name = $options['worker'];
+$worker_config = $config['workers'][$worker_name];
+//TODO perhaps extract in some sort of validation or somewhere
+if (!isset($worker_config['class_name'])) {
+    echo "ERROR: class_name not set in config for worker {$worker_name}" . PHP_EOL;
+    exit(1);
+}
+if (!isset($worker_config['class_path']) && strpos($worker_config['class_name'],'Edo_') !== 0) {
+    echo "ERROR: class_path not set in config for worker {$worker_name}. Not built in worker." . PHP_EOL;
+    exit(1);
 }
 
-//validation of args
-//$worker_type = $args[1];
-//if (!in_array($worker_type,$allowedWorkerTypes)) {
-//    help();exit;
-//}
+if (strpos($worker_config['class_name'],'Edo_') !== 0) {
+    require_once($worker_config['class_path']);
+} else {
+    require_once(str_replace('_',DIRECTORY_SEPARATOR,$worker_config['class_name']). ".php");
+}
 
-$worker_type = $options['worker'];
-//var_dump($worker_type);
-//exit;
+if (!class_exists($worker_config['class_name'])) {
+    echo "ERROR: unable to find class {$worker_config['class_name']} in path" . PHP_EOL;
+    exit(1);
+}
 
-$fullLock = $options['full-lock'];
-$fullLock = $fullLock ? "lock_full_{$worker_type}" : null;
-$fullLockWarningTime = $options['full-lock-warning-time'];
-$allowedAttempts = $options['allowed-attempts'];
-$limit_time = $options['time-limit'];
-//create the worker based on worker_type...set the limit
+//TODO better follow interface here?
+if (!is_subclass_of($worker_config['class_name'],'Edo_Event_Worker_Abstract')) {
+    echo "ERROR: class {$worker_config['class_name']} is not subclass of Edo_Event_Worker_Abstract" . PHP_EOL;
+    exit(1);
+}
 
-//able to include custom workers and all
-$className = "Edo_Event_Worker_" . ucfirst($worker_type);
-$pathName = "Edo/Event/Worker/" . ucfirst($worker_type) . ".php";
-require_once ($pathName);
-//TODO pass filters directory for manager ...this consturct argument is for manager only........
-$worker = new $className(dirname(__FILE__) . DIRECTORY_SEPARATOR . "data" . DIRECTORY_SEPARATOR . 'manager' . DIRECTORY_SEPARATOR . 'filters');
-//TODO autodetermine pooll...no more Poolable $pool = Edo_Event_Poolable::POOL_WORKER_EVENTSTATS;
-//
-exit('aaaaa');
+$worker = new $worker_config['class_name']($config);
+exit;
 
 //check full locks...if worker is supposed to start at all
 $fullLockPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cronjob_tmp'. DIRECTORY_SEPARATOR . $fullLock;
@@ -106,9 +112,9 @@ if ($fullLock) {
         $lock_time = file_get_contents($fullLockPath);
         $currentLockTime = time() - $lock_time;
         if ($currentLockTime > $fullLockWarningTime) {
-            echo "Full lock of worker {$worker_type} is not released for {$currentLockTime} seconds while the warning time is {$fullLockWarningTime} seconds. Might wanna have a look wassup." . PHP_EOL;
+            echo "Full lock of worker {$worker_name} is not released for {$currentLockTime} seconds while the warning time is {$fullLockWarningTime} seconds. Might wanna have a look wassup." . PHP_EOL;
         }
-        exit;//file is locked....some other worker of this type already working
+        exit;//file is locked....some other worker of this name already working
     } else {//ackuire full lock
         file_put_contents($fullLockPath,time());
     }
@@ -138,7 +144,7 @@ do {
 
         $engine->incrementAttempts($pool,$event);
         if ($event->attempts_made > $allowedAttempts) {
-            echo "Worker $worker_type event_id: {$event->id} exceeded allowed attempts. Attempts {$event->attempts_made} Allowed: {$allowedAttempts}." . PHP_EOL;
+            echo "Worker $worker_name event_id: {$event->id} exceeded allowed attempts. Attempts {$event->attempts_made} Allowed: {$allowedAttempts}." . PHP_EOL;
             $engine->failed($event->id,$pool);
             $failed = true;
         }
@@ -153,7 +159,7 @@ do {
         } else {
             $engine->unlock($event->id,$pool);
             //            $failed = true;
-            //            echo "Worker $worker_type   event_id: {$event->id} unable to complete task. Tried {$event->attempts_made} times. Allowed attempts: {$allowedAttempts}" . PHP_EOL;
+            //            echo "Worker $worker_name   event_id: {$event->id} unable to complete task. Tried {$event->attempts_made} times. Allowed attempts: {$allowedAttempts}" . PHP_EOL;
             //            if ($fullLock) {//worker is getting next work right away....so just updates the timeer in lock file
             //                file_put_contents($fullLockPath,time());
             //            }
@@ -179,9 +185,13 @@ if ($fullLock) {
 
 function help()
 {
-    global $allowedWorkerTypes;
-    echo  "SYNTAX: php ./cronjob_workshop_worker <worker_type>" . PHP_EOL;
-    echo  "Supported workers: ".implode($allowedWorkerTypes,'|'). "". PHP_EOL;
+    echo '
+        * Syntax:
+        * php ./cronjob_workshop_worker --worker=<worker_name>
+        *
+        * Example run of cronjob
+        * php ./cronjob_workshop_worker.php --worker=manager --time-limit=20 --set-time-limit=0 --full-lock=true
+        * ' . PHP_EOL;
 }
 
 function parseOptions($num_options,$options,$defaultOptions)

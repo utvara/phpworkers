@@ -10,30 +10,19 @@ class Edo_Event_Worker_Manager extends Edo_Event_Worker_Abstract
 
     private $filters = array();
 
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
     }
 
     protected function _loadFilters()
     {
-        if (!$this->filters_path) {
-            throw new Edo_Event_Worker_Exception("Could not find filters path for manager worker");
-        }
+        $all_filters = $this->getGlobalConfigKey('workers');
+        $use_filters = $this->getWorkerConfigKey('active_workers');
 
-        if (!is_dir($this->filters_path) || !is_readable($this->filters_path)) {
-            throw new Edo_Event_Worker_Exception("Filter path not directory or not readable");
-        }
-
-        $allFilters = $this->getGlobalConfigKey('workers');
-        $useFilters = $this->getWorkerConfigKey('active_workers');
-
-
-        foreach ($allFilters as $name => $config) {
-            if ($use_filters && $use_filters != 'all') {
-                if (!in_array($name, $useFilters)) {
-                    continue;
-                }
+        foreach ($all_filters as $name => $config) {
+            if (!in_array($name, $use_filters)) {
+                continue;
             }
             $this->filters[$name] = $config;
         }
@@ -42,19 +31,16 @@ class Edo_Event_Worker_Manager extends Edo_Event_Worker_Abstract
     public function processEvent(Edo_Event $event)
     {
         $this->_loadFilters();
-        foreach ($this->filters as $filter) {
+        foreach ($this->filters as $worker_name => $filter) {
             if ($this->hasMatch($filter,$event)) {
-                $poolName = constant('Edo_Event_Poolable::'. $filter['pool']);
                 $newEvent = clone $event;
-                //TODO @utvara second argument should be worker_name now
-                Edo_Event_Factory::create($newEvent, $poolName);
+                Edo_Event_Factory::create($newEvent, $worker_name);
             } else {
                 $e = var_export($event->toArray(),1);
                 $f = var_export($filter,1);
 //                $this->log("No match for filter $f  event $e");
             }
         }
-
         return true;
     }
 

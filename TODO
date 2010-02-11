@@ -1,5 +1,6 @@
-- cleanup logging approach
+- cleanup logging approach in Abstract
 - cleanup Abstract...looking for config file and all get rid of dirname( ...blabla assumptions
+- what if worker name is my_worker  ..get rid of magic  _ to / conversion
 
 1. leave only workers, managers,eventstats,tweety
 2. general configuration and config per worker
