@@ -106,7 +106,8 @@ $worker = new $worker_config['class_name']($config);
 exit;
 
 //check full locks...if worker is supposed to start at all
-$fullLockPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cronjob_tmp'. DIRECTORY_SEPARATOR . $fullLock;
+//should be made abstract that it doesn't support file engine only..lock mechanism should be regardless of engine used
+$fullLockPath = $config['engine']['lock_path'] . DIRECTORY_SEPARATOR . $fullLock;
 if ($fullLock) {
     if (is_file($fullLockPath)) {
         $lock_time = file_get_contents($fullLockPath);

@@ -19,6 +19,7 @@ $config['env']['error_reporting'] = E_ALL | E_STRICT ;//format for error_reporti
 $config['engine'] = array();
 $config['engine']['type'] = "file";
 $config['engine']['base_path'] = dirname(dirname(dirname(__FILE__))) . '/example/data';//full path to workers data/ dir
+$config['engine']['lock_path'] = dirname(dirname(dirname(__FILE__))) . '/example/cronjob_lock';//full path to where full-lock files will be stored
 
 
 /**
