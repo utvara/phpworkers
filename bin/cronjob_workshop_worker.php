@@ -106,7 +106,7 @@ $worker = new $worker_config['class_name']($config);
 exit;
 
 //check full locks...if worker is supposed to start at all
-//should be made abstract that it doesn't support file engine only..lock mechanism should be regardless of engine used
+//TODO should move this part in engine_file as this locking is specific for file engine.
 $fullLockPath = $config['engine']['lock_path'] . DIRECTORY_SEPARATOR . $fullLock;
 if ($fullLock) {
     if (is_file($fullLockPath)) {
