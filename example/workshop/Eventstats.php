@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__) . '/Abstract.php');
 
-class Edo_Event_Worker_Eventstats extends Edo_Event_Worker_Abstract
+class My_Eventstats extends Edo_Event_Worker_Abstract
 {
 
     protected $name = 'eventstats';
