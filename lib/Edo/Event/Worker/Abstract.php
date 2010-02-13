@@ -1,7 +1,5 @@
 <?php
 
-
-require_once(dirname(dirname(__FILE__)) . '/Engine/Abstract.php');
 require_once(dirname(__FILE__) . '/Exception.php');
 
 abstract class Edo_Event_Worker_Abstract

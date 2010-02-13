@@ -70,7 +70,6 @@ $limit_time = $options['time-limit'];
 require_once ("Edo/Event/Engine/Factory.php");
 require_once ("Edo/Event.php");
 require_once ("Edo/Event/Engine.php");
-//require_once ("Edo/Event/Poolable.php");
 
 //figuring out class name and path of worker and including it
 $worker_name = $options['worker'];
