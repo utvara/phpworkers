@@ -17,11 +17,20 @@
 // Also multi leve key substituion is possible
 // example: $managerWorker->getWorkerConfigKey('foo.moo')    -> will retrieve $config['workers']['manager']['foo']['moo']
 // example: $managerWorker->getGlobalConfigKey('foo.moo')    -> will retrieve $config['foo']['moo']
-//
+
+
+/**
+ * Setting some environemnt variables used by cronjob_workshop_worker.php
+ */
 $config = array();
 $config['env']['date_default_timezone_set'] = 'Europe/Berlin';//format like date_default_timezone_set()
 $config['env']['error_reporting'] = E_ALL | E_STRICT ;//format for error_reporting();
 
+/**
+ * Engine to use where events should be stored and manipulated
+ * Currently only type 'file' is used
+ * You may see example layout in example/data
+ */
 $config['engine'] = array();
 $config['engine']['type'] = "file";
 $config['engine']['base_path'] = dirname(dirname(dirname(__FILE__))) . '/example/data';//full path to workers data/ dir
@@ -29,8 +38,9 @@ $config['engine']['lock_path'] = dirname(dirname(dirname(__FILE__))) . '/example
 
 
 /**
- * Each worker should 'class_name' and 'class_path' to find this class
- * Each class should be of type Edo_Event_Worker_Abstract
+ * List of workers and their configs
+ * Only required settings are 'class_name' and 'class_path' to find this class
+ * Each class should be of type Edo_Event_Worker_Abstract  currently must extend it...will refactor soon to be interface only
  * For built in workers (starting with "Edo_") - probably just manager will ever be) you need class_name only
  */
 $config['workers'] = array();

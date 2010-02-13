@@ -1,4 +1,5 @@
 - cleanup logging approach in Abstract
+- ACCEPT_ALL - should be some sort of constants within the config
 
 1. leave only workers, managers,eventstats,tweety
 2. general configuration and config per worker
