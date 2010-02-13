@@ -21,6 +21,7 @@ abstract class Edo_Event_Worker_Abstract
     protected function init()
     {
 
+
     }
 
     /**
