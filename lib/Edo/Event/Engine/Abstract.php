@@ -25,31 +25,31 @@ abstract class Edo_Event_Engine_Abstract
      */
     abstract protected function init();
 
-    protected function isTriedEvent($id,$poolName)
+    protected function isTriedEvent($id,$worker_name)
     {
-        if (!isset($this->tried_events[$poolName])) {
+        if (!isset($this->tried_events[$worker_name])) {
             return false;
         }
 
-        return in_array($id,$this->tried_events[$poolName]);
+        return in_array($id,$this->tried_events[$worker_name]);
     }
 
-    protected function markTriedEvent($id,$poolName)
+    protected function markTriedEvent($id,$worker_name)
     {
-        if (!isset($this->tried_events[$poolName])) {
-            $this->tried_events[$poolName] = array();
+        if (!isset($this->tried_events[$worker_name])) {
+            $this->tried_events[$worker_name] = array();
         }
-        $this->tried_events[$poolName][] = $id;
+        $this->tried_events[$worker_name][] = $id;
     }
 
-    abstract public function findEventById($id,$poolName);
+    abstract public function findEventById($id,$worker_name);
 
-    abstract public function create($poolName,Edo_Event $event);//no id needed....even if have one will be redundent
-    abstract public function update($id,$poolName, Edo_Event $event);//must have id
-    abstract public function delete($id,$poolName);
-    abstract public function isLocked($id,$poolName);
-    abstract public function lock($id,$poolName);
-    abstract public function unlock($id,$poolName);
-    abstract public function incrementAttempts($poolName, Edo_Event $event);
-    abstract public function failed($id, $poolName);
+    abstract public function create($worker_name,Edo_Event $event);//no id needed....even if have one will be redundent
+    abstract public function update($id,$worker_name, Edo_Event $event);//must have id
+    abstract public function delete($id,$worker_name);
+    abstract public function isLocked($id,$worker_name);
+    abstract public function lock($id,$worker_name);
+    abstract public function unlock($id,$worker_name);
+    abstract public function incrementAttempts($worker_name, Edo_Event $event);
+    abstract public function failed($id, $worker_name);
 }

@@ -7,7 +7,7 @@ require_once(dirname(__FILE__) .  "/Engine/Exception.php");
 
 class Edo_Event_Factory
 {
-    public static function create($eventOrData,$worker_name,
+    public static function create($eventOrData,$worker_name = 'manager',
         Edo_Event_Engine_Abstract $engine = null,$aquire_lock = false)
     {
         if (!$engine) {
@@ -15,7 +15,7 @@ class Edo_Event_Factory
         }
 
         if (!$engine) {
-            throw new Edo_Event_Engine_Exception("Unable to create Edo_Event object");
+            throw new Edo_Event_Engine_Exception("Unable to initiate engine");
         }
 
         if (is_array($eventOrData)) {
@@ -26,11 +26,9 @@ class Edo_Event_Factory
             throw new Edo_Event_Engine_Exception("Unable to create Edo_Event object");
         }
 
-        //TODO: move _pool magic to Engine
-        $poolName = $worker_name . '_pool';
-        if ($id = $engine->create($poolName,$event)) {
+        if ($id = $engine->create($worker_name,$event)) {
             if (!$aquire_lock) {
-                $engine->unlock($event->id,$poolName);
+                $engine->unlock($event->id,$worker_name);
             }
             return $id;
         }
