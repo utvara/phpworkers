@@ -3,4 +3,5 @@
 - adjust dummy worker eventstats
 - add example/index.php - create new event...example howto process with manager..and howto process with eventstats
 - add comments on each method/function
+- add mysql engine
 - release
