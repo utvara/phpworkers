@@ -1,15 +1,6 @@
 - cleanup logging approach in Abstract
 - ACCEPT_ALL - should be some sort of constants within the config
-
-1. leave only workers, managers,eventstats,tweety
-2. general configuration and config per worker
-
-
-
-- thing of project name
-- improve configuration..should be easier
-- create dummy worker
+- adjust dummy worker eventstats
+- add example/index.php - create new event...example howto process with manager..and howto process with eventstats
 - add comments on each method/function
-- non versioned config files should provide default template so people just rename file and edit
-- add simple use cases - howto run worker, howto add new worker
 - release
