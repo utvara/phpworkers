@@ -1,0 +1,11 @@
+Better explanation will come soon....
+
+Messaging system to easy user experience.
+Example usage: sending mails, archives, stats, resizing images, updating search engines, creating feeds
+
+Anything that user don't expect instant feedback and is better up processed as background cron process.
+Supports event names and tagging mechanisms to figure out what workers is 'listening'  for what events.
+One 'manager' worker is responsible for delegating messages to workers.
+
+This is workflow
+http://github.com/utvara/phpworkers/raw/master/docs/worker_proces.png
