@@ -118,8 +118,8 @@ class Edo_Event_Worker_ManagerTest extends PHPUnit_Framework_TestCase {
         $worker = new Edo_Event_Worker_Manager($this->test_config);
 
         $global = array();
-        $global['foo'] = 'http://api.earth.org';
-        $global['moo'] = 'http://earth.org';
+        $global['foo'] = 'aaaaaa';
+        $global['moo'] = 'bbbbbbb';
         $global['solr']['host'] = 'localhost';
         $global['solr']['port'] = '8080';
         $global['workers']['testworker']['foo'] = 'someinterestingstring';
