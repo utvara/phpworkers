@@ -1,41 +1,24 @@
 #!/bin/bash
+# This is example script that may be used in debian/ubuntu to be daemonisezed. It run each second for particular
+# worker. For how it is executed see bin/init_daemon.sh
+# Adjust things between @@
 
 TYPE=$1;
-POOL=/srv/www/domains/earth.org/live/workshop/data/$1/pool/
-WORKER_CRON=/srv/www/domains/earth.org/live/workshop/cronjob_workshop_worker.php
+POOL=@@/path/to/@@/data/$1/pool/
+WORKER_CRON=@@/path/to/@@cronjob_workshop_worker.php
 PHP=`which php`
-EMAIL="tech@earth.org"
+EMAIL="tech@example.org"
 SUBJECT="LIVE"
 
 if [ "$TYPE" != "manager"  \
-    -a "$TYPE" != 'feedy'  \
-    -a "$TYPE" != 'loggy'  \
-    -a "$TYPE" != 'tweety'  \
-    -a "$TYPE" != 'tiledrop'  \
-    -a "$TYPE" != 'alldestination'  \
-    -a "$TYPE" != 'sitemapy'  \
-    -a "$TYPE" != 'contentstats'  \
-    -a "$TYPE" != 'solrybulk'  \
-    -a "$TYPE" != 'streamy'  \
     -a "$TYPE" != 'eventstats'  \
-    -a "$TYPE" != 'sanitar'  \
-    -a "$TYPE" != 'solrysingle'  \
-    -a "$TYPE" != 's3'  \
-    -a "$TYPE" != 'domestos'  \
-    -a "$TYPE" != 'activity'  \
-    -a "$TYPE" != 'eventloggy'  \
-    -a "$TYPE" != 'imaginator'  \
-    -a "$TYPE" != 'imageindexer'  \
-    -a "$TYPE" != 'followrecommended'  \
-    -a "$TYPE" != 'userindexer'  \
     ]
 then
     echo "Worker type"
     echo ""
-    echo "Usage: "$0" {manager|feedy|loggy|tweety|tiledrop|alldestination|sitemapy|contentstats|solrybulk|streamy|domestos|eventstats|sanitar|solrysingle|activity|eventloggy|imaginator|imageindexer|followrecommended}"
+    echo "Usage: "$0" {manager|eventstats}"
     exit 0;
 fi
-#    -a "$TYPE" != 'domestos'  \   //not really ready
 
 echo $$ > /tmp/worker_${TYPE}.pid
 while [ "true" ]

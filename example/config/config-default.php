@@ -1,17 +1,23 @@
 <?php
+//This is example config file that is the glue between your appliction and "phpworkers"
+//
 //CREATE ONE config-local.php file where this file is suited and set variables specific to your environment
-//you can set worker specific configs like $config['feedy']['something'] = 'a'
-//where feedy is $this->name propertyof worker .
+//you can set worker specific configs like $config['workers']['myworkername']['something'] = 'a'
+//where myworkername is $this->name property of the worker class.
 //
 //Getting/Setting Global config...        get/set analogic
 //   public function getGlobalConfigKey($key)
 //   public function getGlobalConfig($key)
 
-
 //Getting/settting WORKER config... get/set analogic
 //
 // public function getWorkerConfigKey($key)
 // public function getWorkerConfig()
+//
+// Also multi leve key substituion is possible
+// example: $managerWorker->getWorkerConfigKey('foo.moo')    -> will retrieve $config['workers']['manager']['foo']['moo']
+// example: $managerWorker->getGlobalConfigKey('foo.moo')    -> will retrieve $config['foo']['moo']
+//
 $config = array();
 $config['env']['date_default_timezone_set'] = 'Europe/Berlin';//format like date_default_timezone_set()
 $config['env']['error_reporting'] = E_ALL | E_STRICT ;//format for error_reporting();

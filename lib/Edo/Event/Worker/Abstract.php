@@ -33,42 +33,28 @@ abstract class Edo_Event_Worker_Abstract
 
     public function getGlobalConfigKey($key,$default = null) {
         return $this->_read($this->global_config,$key,$default);
-//        if (is_null($default) &&  !array_key_exists($key,$this->global_config)) {
-//            throw new Edo_Event_Worker_Exception("Worker {$this->name} Undefined  key {$key}");
-//        }
-
-//        return array_key_exists($key,$this->global_config) ? $this->global_config[$key] : $default;
     }
 
     public function getWorkerConfigKey($key,$default = null)
     {
         $config = (array) $this->getWorkerConfig();
         return $this->_read($config,$key,$default);
-//        if (is_null($default) && !array_key_exists($key,$config)) {
-//            throw new Edo_Event_Worker_Exception("Worker {$this->name} Undefined  key {$key} in worker config");
-//        }
-//        return array_key_exists($key,$config) ? $config[$key] : $default;
     }
 
     public function getWorkerConfig($default = null)
     {
-//        if (is_null($default) && !array_key_exists($this->name,$this->global_config['workers'])) {
-//            throw new Edo_Event_Worker_Exception("Worker {$this->name} Undefined  worker config for worker {$this->name}");
-//        }
         return array_key_exists($this->name,$this->global_config['workers']) ? $this->global_config['workers'][$this->name] : $default;
     }
 
     /**
      * Set configs
      */
-
     public function setGlobalConfig($global_config) {
         $this->global_config = $global_config;
     }
 
     public function setGlobalConfigKey($key,$value) {
         $this->_write($this->global_config,$key,$value);
-//        $this->global_config[$key] = $value;
     }
 
     public function setWorkerConfig($config)
@@ -79,7 +65,6 @@ abstract class Edo_Event_Worker_Abstract
     public function setWorkerConfigKey($key,$value)
     {
         $this->_write($this->global_config['workers'][$this->name],$key,$value);
-//        $this->global_config['workers'][$this->name][$key] = $value;
     }
 
     /**

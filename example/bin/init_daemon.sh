@@ -1,40 +1,22 @@
 #!/bin/sh
 # Quick start-stop-daemon example, derived from Debian /etc/init.d/ssh
+# Daemon is daemonize workers if you need them running more frequent than 1minute and cronjob is no solution for you
 set -e
 # Must be a valid filename
 
-NAME=$2;
-if [ "$NAME" != "manager"  \
-    -a "$NAME" != 'feedy'  \
-    -a "$NAME" != 'loggy'  \
-    -a "$NAME" != 'tweety'  \
-    -a "$NAME" != 'tiledrop'  \
-    -a "$NAME" != 'alldestination'  \
-    -a "$NAME" != 'sitemapy'  \
-    -a "$NAME" != 'contentstats'  \
-    -a "$NAME" != 'solrybulk'  \
-    -a "$NAME" != 'streamy'  \
-    -a "$NAME" != 'eventstats'  \
-    -a "$NAME" != 'sanitar'  \
-    -a "$NAME" != 'solrysingle'  \
-    -a "$NAME" != 's3'  \
-    -a "$NAME" != 'domestos'  \
-    -a "$NAME" != 'activity'  \
-    -a "$NAME" != 'eventloggy'  \
-    -a "$NAME" != 'imaginator'  \
-    -a "$NAME" != 'imageindexer'  \
-    -a "$NAME" != 'followrecommended'  \
-    -a "$NAME" != 'userindexer'  \
-    ]
-then
-    echo "Usage: "$0" {start|stop|restart} {manager|feedy|loggy|tweety|tiledrop|alldestination|sitemapy|contentstats|solrybulk|streamy|domestos|eventstats|sanitar|solrysingle|activity|eventloggy|imaginator|imageindexer|followrecommended}"
-    exit 1;
-fi
-#    -a "$TYPE" != 'domestos'  \   //not really ready
-
 PIDFILE=/tmp/worker_$NAME.pid
 #This is the command to be run, give the full pathname
-DAEMON=/root/bin/workers_bin/workerd
+DAEMON=@@/path/to/@@/bin/workerd
+
+NAME=$2;
+if [ "$NAME" != "manager"  \
+    -a "$NAME" != 'eventstats'  \
+    ]
+then
+    echo "Usage: "$0" {start|stop|restart} {manager|eventstats}"
+    exit 1;
+fi
+
 DAEMON_OPTS=" $NAME "
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
@@ -74,9 +56,7 @@ case "$1" in
     start-stop-daemon --start --quiet --pidfile $PIDFILE -b --exec $DAEMON -- $DAEMON_OPTS
     ;;
     *)
-    echo "Usage: "$0" {start|stop|restart} {manager|feedy|loggy|tweety|tiledrop|alldestination|sitemapy|contentstats|solrybulk|streamy|domestos|eventstats|sanitar|solrysingle|activity|eventloggy|imaginator|imageindexer|followrecommended}"
+    echo "Usage: "$0" {start|stop|restart} {manager|eventstats}"
     exit 1
 esac
-
-exit 0
 
