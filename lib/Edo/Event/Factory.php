@@ -1,5 +1,17 @@
 <?php
 
+
+/**
+ * phpworkers
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ *
+ * @copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+ */
+
 require_once(dirname(dirname(__FILE__)) .  "/Event.php");
 require_once(dirname(__FILE__) .  "/Engine.php");
 require_once(dirname(__FILE__) .  "/Engine/Factory.php");

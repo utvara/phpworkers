@@ -1,4 +1,14 @@
 #!/bin/sh
+
+#phpworkers
+#
+#LICENSE
+#
+#This source file is subject to the new BSD license that is bundled
+#with this package in the file LICENSE.txt.
+#
+#@copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+
 # Quick start-stop-daemon example, derived from Debian /etc/init.d/ssh
 # Daemon is daemonize workers if you need them running more frequent than 1minute and cronjob is no solution for you
 set -e

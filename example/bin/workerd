@@ -1,7 +1,22 @@
 #!/bin/bash
+
+
+#
+#phpworkers
+#
+#LICENSE
+#
+#This source file is subject to the new BSD license that is bundled
+#with this package in the file LICENSE.txt.
+#
+#@copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+
+
+
 # This is example script that may be used in debian/ubuntu to be daemonisezed. It run each second for particular
 # worker. For how it is executed see bin/init_daemon.sh
 # Adjust things between @@
+
 
 TYPE=$1;
 POOL=@@/path/to/@@/data/$1/pool/

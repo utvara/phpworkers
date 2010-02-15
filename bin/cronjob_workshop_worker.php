@@ -1,4 +1,17 @@
 <?php
+
+
+/**
+ * phpworkers
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ *
+ * @copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+ */
+
 /**
  * THIS IS CRONJOB
  * It runs either as manager or one of workers names. See docs/README.txt for more

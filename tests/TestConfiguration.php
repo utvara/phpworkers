@@ -1,5 +1,17 @@
 <?php
 
+
+/**
+ * phpworkers
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ *
+ * @copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+ */
+
 date_default_timezone_set('Europe/Berlin');
 require_once(dirname(__FILE__) . "/FileEngineHelper.php");
 error_reporting(E_ALL | E_STRICT);

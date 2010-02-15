@@ -1,4 +1,16 @@
 <?php
+
+
+/**
+ * phpworkers
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ *
+ * @copyright  Copyright (c) 2010 Slobodan Utvic and Julian Davchev
+ */
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Edo_Event_Worker_AllTests::main');
 }
